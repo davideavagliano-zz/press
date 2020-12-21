@@ -1,0 +1,88 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'com.jfrog.bintray'
+    id 'maven-publish'
+}
+
+android {
+
+    compileSdkVersion 30
+
+    buildToolsVersion '30.0.2'
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode press_props['version.code'] as Integer
+        versionName press_props['version.name']
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = press_props['group.id']
+                artifactId = press_props['artifact.id']
+                version = press_props['version.name']
+            }
+        }
+    }
+}
+
+bintray {
+    user = bintray_props['bintray.user']
+    key = bintray_props['bintray.key']
+    publications = ['release']
+    publish = true
+    override = true
+    pkg {
+        repo = bintray_props['bintray.repo']
+        name = press_props['artifact.id']
+        desc = press_props['library.description']
+        licenses = [press_props['library.license']]
+        websiteUrl = press_props['library.url']
+        vcsUrl = "${press_props['library.url']}.git"
+        issueTrackerUrl = "${press_props['library.url']}/issues"
+        githubRepo = press_props['github.repo']
+        githubReleaseNotesFile = "${press_props['library.url']}/CHANGELOG.md"
+        publicDownloadNumbers = true
+        version {
+            name = press_props['version.name']
+            vcsTag = press_props['version.name']
+            released = new Date()
+        }
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+
+    testImplementation 'junit:junit:4.13.1'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

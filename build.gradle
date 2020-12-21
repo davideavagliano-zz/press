@@ -1,0 +1,41 @@
+buildscript {
+
+    ext.kotlin_version = '1.4.21'
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+def readProperties(String fileName) {
+    File propertiesFile = file(fileName)
+    if (!propertiesFile.exists()) {
+        throw new GradleException("You must provide a $fileName file.")
+    }
+    def p = new Properties()
+    p.load(new FileInputStream(propertiesFile))
+    return p
+}
+
+ext {
+    bintray_props = readProperties('bintray.properties')
+    press_props = readProperties('press.properties')
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
