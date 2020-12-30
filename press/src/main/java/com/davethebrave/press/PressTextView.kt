@@ -1,6 +1,7 @@
 package com.davethebrave.press
 
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Color.BLACK
 import android.graphics.Typeface
 import android.graphics.Typeface.DEFAULT
@@ -99,5 +100,10 @@ class PressTextView @JvmOverloads constructor(
                 else -> layoutHeight
             }
         )
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        layout.draw(canvas)
     }
 }
