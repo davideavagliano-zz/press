@@ -42,11 +42,12 @@ class PressTextView @JvmOverloads constructor(
     private var includeFontPadding: Boolean = false
     private var ellipsis: TruncateAt = ELLIPSIS_END
     private var maxLines: Int = MAX_VALUE
-    private var paint = TextPaint()
+    private var paint = TextPaint().also { it.isAntiAlias = true }
 
     init {
+
         attrs.read(context, R.styleable.PressTextView, defStyleAttr, defStyleRes) {
-            text = getString(R.styleable.PressTextView_text) ?: ""
+            text = getString(R.styleable.PressTextView_text) ?: "Test"
             textSize = getDimension(R.styleable.PressTextView_textSize, 16f)
             textColor = getColor(R.styleable.PressTextView_textColor, BLACK)
             typeface = getResourceId(R.styleable.PressTextView_fontFamily, 0).asTypeface(context)
@@ -59,6 +60,10 @@ class PressTextView @JvmOverloads constructor(
             ellipsis = getInt(R.styleable.PressTextView_ellipsize, 2).toEllipsis()
             maxLines = getInt(R.styleable.PressTextView_maxLines, MAX_VALUE)
         }
+
+        paint.textSize = textSize
+        paint.color = textColor
+        paint.typeface = typeface
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
