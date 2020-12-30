@@ -48,7 +48,7 @@ class PressTextView @JvmOverloads constructor(
     init {
 
         attrs.read(context, R.styleable.PressTextView, defStyleAttr, defStyleRes) {
-            text = getString(R.styleable.PressTextView_text) ?: "Test"
+            text = getString(R.styleable.PressTextView_text) ?: ""
             textSize = getDimension(R.styleable.PressTextView_textSize, 16f)
             textColor = getColor(R.styleable.PressTextView_textColor, BLACK)
             typeface = getResourceId(R.styleable.PressTextView_fontFamily, 0).asTypeface(context)
